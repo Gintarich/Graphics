@@ -1,6 +1,6 @@
 # Directx Architecture
 
-![Alt text](../Images/image.png)
+![Alt text](../Images/DX3D%20arch.png)
 
 ## Device
 The representation of graphics device, in this case graphics card, used to create swap chains, shaders, resources ect  
@@ -8,10 +8,10 @@ Created using factory function CreateDevice
 
 ## Swap chain
 How the pixel data actually gets to the monitor
- ![Alt text](../Images/image-1.png)
+ ![Alt text](../Images/SWAP.png)
  Contains framebuffers that are used to draw on, and then send them to monitor.  
  Usually use 2 Framebuffers(Double buffering), swapchain is used to flip those framebuffers, when frame is ready to be drawn.
- ![Alt text](image-2.png)
+ ![Alt text](../Images/SWAP_with%20buffers.png)
 
 ## DXGI
 Contains functions that changes rarer than Directx3d changes. Used to create swap chain.
@@ -39,7 +39,7 @@ Two types of contexts:
 - immediate (Immediately executes the commands, can querry graphics driver)
 - deferred (Used for multithreaded workflows)
 
-![Alt text](image-3.png)
+![Alt text](../Images/Context.png)
 
 
 
