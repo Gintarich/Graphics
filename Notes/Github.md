@@ -30,3 +30,5 @@ git remote add origin https://github.com/Gintarich/Graphics
 ```
 git push origin main
 ```
+
+## 2. Usefull commands 
