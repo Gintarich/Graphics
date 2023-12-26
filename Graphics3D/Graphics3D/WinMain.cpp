@@ -1,5 +1,17 @@
 #include <Windows.h>
 
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	switch (msg)
+	{
+	case WM_CLOSE:
+		PostQuitMessage(69);
+		break;
+	}
+	return DefWindowProc(hWnd, msg, wParam, lParam);
+}
+
+
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
@@ -13,7 +25,7 @@ int CALLBACK WinMain(
 	WNDCLASSEXW wc = { 0 };
 	wc.cbSize = sizeof(wc);				//Size of the structure
 	wc.style = CS_OWNDC;				//Class style CS_OWNDC every window will have separete device context
-	wc.lpfnWndProc = DefWindowProc;		//Function tha handles all the messages we will use default for now
+	wc.lpfnWndProc = WndProc;		//Function tha handles all the messages we will use default for now
 	wc.cbClsExtra = 0;					//Alows allocate extra bites for the window class structure
 	wc.cbWndExtra = 0;					//Alows allocate extra bites for each window
 	wc.hInstance = hInstance;			//Instance
@@ -35,9 +47,18 @@ int CALLBACK WinMain(
 	);
 	ShowWindow(hWnd, SW_SHOW);
 
+	//Handle messages
+	MSG msg;
+	BOOL gResult;//Get message returns -1 if something wrong
 
-
-	while (true);
-
-	return 0;
+	while ((gResult = GetMessage(&msg,nullptr,0,0))>0)
+	{
+		TranslateMessage(&msg);
+		DispatchMessageW(&msg);
+	}
+	if (gResult == -1)
+	{
+		return -1;
+	}
+	else return msg.wParam;
 }

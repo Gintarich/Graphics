@@ -57,4 +57,63 @@ HWND hWnd = CreateWindowExW(
 ShowWindow(hWnd, SW_SHOW);
 ```
 
+## Windows messages
 
+Windows enherently is event driven system
+
+![Alt text](Images/Windows_Events.png)
+
+### Algrithm works like this:
+- You click a button, the event is sent to message queue
+- When you are ready you call GetMessage() and get the bottom event from queue
+- Then you process this event(Filter, Modify, Translate)
+- Then we call DispatchMessage(), this sends message back to Win32 side, win32 then process this message
+- Win32 passes this message to WindowsProcidure(The one we passed in when created the windows)
+- Then it calls DefaultWindowsProcidure
+
+### GetMessage function
+```cpp
+GetMessage( 
+		LPMSG lpMsg, // LPMSG lpMsg - Pointer to the message(Structure for Win32 to fill)
+		nullptr, // HWND hWnd - Handle to window(we pass nullptr then we get messages for all windows)
+		0, // UINT wMsgFilterMin - range of message numbers (0 for all messages)
+		0 // UINT wMsgFilterMax - range of message numbers (0 for all messages)
+	);
+```
+
+### Code Should look like this:
+```cpp
+//Handle messages
+MSG msg;
+while (GetMessage(&msg,nullptr,0,0)>0)
+{
+	TranslateMessage(&msg);
+	DispatchMessageW(&msg);
+}
+```
+
+### Our Custom Windows Procidure
+
+We pass it when creating a window in place of default windows procidure
+```cpp
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	switch (msg)
+	{
+	case WM_CLOSE:
+		PostQuitMessage(69);
+		break;
+	}
+	return DefWindowProc(hWnd, msg, wParam, lParam);
+}
+```
+
+### Handling key events
+List of message names:  
+
+List of Virtual codes:  
+https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-keydown  
+https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+
+If character keys are getting pressed then Translate message adds an aditional WM_CHAR message to message queue. WM_CHAR can be used to get capital letters, and is mostly used when text processing is needed.
+For reguler key commands WM_KEYDONW is mostly used.
