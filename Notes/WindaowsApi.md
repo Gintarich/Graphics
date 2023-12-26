@@ -117,3 +117,35 @@ https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 
 If character keys are getting pressed then Translate message adds an aditional WM_CHAR message to message queue. WM_CHAR can be used to get capital letters, and is mostly used when text processing is needed.
 For reguler key commands WM_KEYDONW is mostly used.
+
+```cpp
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	
+	switch (msg)
+	{
+	case WM_CLOSE:
+		PostQuitMessage(69);
+		break;
+	case WM_CHAR:
+		{
+			static std::wstring title;
+			title.push_back((char)wParam);
+			SetWindowText(hWnd, title.c_str());
+		}
+		break;
+	case WM_LBUTTONDOWN:
+		{
+			const POINTS pt = MAKEPOINTS(lParam);
+			std::ostringstream oss;
+			oss << "(" << pt.x << "," << pt.y << ")";
+			SetWindowTextA(hWnd, oss.str().c_str());
+		}
+		break;
+	}
+	return DefWindowProc(hWnd, msg, wParam, lParam);
+}
+```
+
+## Windows Framework
+
