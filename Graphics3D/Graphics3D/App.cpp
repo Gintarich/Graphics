@@ -22,7 +22,8 @@ int App::Go()
 
 void App::DoFrame()
 {
-	wnd.Gfx().ClearBuffer(0.5f, 0.5f, 0.5f);
-	wnd.Gfx().DrawTestTriangle();
+	const float c = sin(timer.Peek()) / 2.0f + 0.5f;
+	wnd.Gfx().ClearBuffer(c, c, 0.5f);
+	wnd.Gfx().DrawTestTriangle(timer.Peek());
 	wnd.Gfx().EndFrame();
 }
